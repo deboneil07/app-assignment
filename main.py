@@ -4,17 +4,21 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from typing import Dict, Optional
 from starlette.middleware.sessions import SessionMiddleware
+import os
+from dotenv import load_dotenv
 
 app = FastAPI()
+load_dotenv()
+
+API_KEY=os.getenv("API_KEY")
+RAPIDAPI_KEY=os.getenv("RAPIDAPI_KEY")
+RAPIDAPI_HOST=os.getenv("RAPIDAPI_HOST")
 
 # Middleware to manage sessions
 app.add_middleware(SessionMiddleware, secret_key="abcd")
 
 templates = Jinja2Templates(directory="templates")
 
-API_KEY = '37aa5c42a24e4c0eafa31761e70f1645'
-RAPIDAPI_KEY = '8702d750b1msh309742bdd86e19cp16ead6jsn8e7b44827020'
-RAPIDAPI_HOST = 'weatherbit-v1-mashape.p.rapidapi.com'
 
 users: Dict[str, str] = {}  # Stores username and password pairs
 
