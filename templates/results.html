@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results for {{ location }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .card {
+            background-color: #ffebf0; /* Light pink background */
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ff69b4; /* Bright pink border */
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .weather {
+            background-color: #d1e7ff; /* Light blue background */
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+        a {
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+            background-color: #ff69b4; /* Bright pink */
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #ff4c7d; /* Darker pink on hover */
+        }
+        .weather-message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Results for {{ location }}</h1>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% else %}
+        <h2>Tourist Spots:</h2>
+        <div class="weather">
+            <strong>Weather:</strong>
+            <p>{{ weather.temperature }}°C, {{ weather.description }}</p>
+            <img src="https://www.weatherbit.io/static/img/icons/{{ weather.icon }}.png" alt="Weather Icon">
+            <div class="weather-message">
+                {% if weather.description == "Rain" %}
+                    Don't forget to take an umbrella or a raincoat!
+                {% elif weather.description == "Sunny" %}
+                    Remember to apply sunscreen and wear a hat!
+                {% elif weather.description == "Cloudy" %}
+                    Great day for exploring—enjoy the cool weather!
+                {% elif weather.description == "Stormy" %}
+                    Warning: Stay safe and avoid going out unless necessary!
+                {% else %}
+                    Enjoy your day, whatever the weather may be!
+                {% endif %}
+            </div>
+        </div>
+        <div>
+        {% for place in places %}
+            <div class="card">
+                <div class="card-header">
+                    <strong>{{ place.properties.name }}</strong>
+                    <span>{{ weather.temperature }}°C</span>
+                </div>
+                <div>
+                    Address: 
+                    {% if place.properties.address_line1 %}
+                        {{ place.properties.address_line1 }}<br>
+                    {% elif place.properties.address %}
+                        {{ place.properties.address }}<br>
+                    {% else %}
+                        No address available<br>
+                    {% endif %}
+                    {% if place.properties.address_line2 %}
+                        {{ place.properties.address_line2 }}<br>
+                    {% endif %}
+                    {% if place.properties.city %}
+                        City: {{ place.properties.city }}<br>
+                    {% endif %}
+                    {% if place.properties.postcode %}
+                        Postcode: {{ place.properties.postcode }}<br>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    <a href="/form">Back to Form</a>
+</body>
+</html>
